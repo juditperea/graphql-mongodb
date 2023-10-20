@@ -29,6 +29,10 @@ const typeDefs = gql`
     createUser(username: String, name: String, surname: String, country: String): User
     createGroup(name: String, memberIds: [String]): Group
   }
+  type Query {
+    getUser(id: ID!): User
+    getGroup(id: ID!): Group
+  }
 `;
 
 const resolvers = {
@@ -86,11 +90,19 @@ const UserModel = mongoose.model('User', userSchema);
 const GroupModel = mongoose.model('Group', groupSchema);
 
 
-/*const server = new ApolloServer({ typeDefs, resolvers });
 
-const app = express();
-server.applyMiddleware({ app });
-
-app.listen({ port: 4000 }, () =>
-  console.log(`Server ready at http://localhost:4000${server.graphqlPath}`)
-);*/
+async function startServer() {
+    const server = new ApolloServer({ typeDefs, resolvers });
+    await server.start();
+    const app = express();
+    server.applyMiddleware({ app });
+  
+    app.listen({ port: 4000 }, () =>
+      console.log(`Server ready at http://localhost:4000${server.graphqlPath}`)
+    );
+  }
+  
+  startServer().catch(error => {
+    console.error('Error starting server:', error.message);
+    process.exit(1); // Exit the process if the server fails to start
+  });
