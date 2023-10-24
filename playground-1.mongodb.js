@@ -1,12 +1,15 @@
-
 // The current database to use.
 use('users');
 
-// Create a new document in the collection.
+// Create a new document in the collection with an 'address' field.
 db.getCollection('user').insertOne({
-    username: 'MAXPOWER',
-    name: 'JUDIT',
-    surname: 'PEREA',
-    country: 'SPAIN',
-    id: '49220078D'
+    username: 'ROBINDAHOOD',
+    name: 'ORIOL',
+    surname: 'PORTA',
+    id: '48524569D',
+    address: {
+        street: 'C/ARISTOTIL,BAJOS',
+        city: 'SABADELL',
+        country: 'SPAIN',
+    }
 });
