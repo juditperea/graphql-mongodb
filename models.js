@@ -30,13 +30,13 @@ const userSchema = new mongoose.Schema({
     unique: true,
   },
   address: {
+    country: String,
     street: String,
     city: String,
-    country: String,
   },
 });
 
-const UserModel = mongoose.model('users', userSchema);
+const UserModel = mongoose.model('user', userSchema);
 
 const typeDefs = gql`
   input AddressInput {
@@ -46,9 +46,9 @@ const typeDefs = gql`
   }
 
   type Address {
+    country: String
     street: String
     city: String
-    country: String
   }
 
   type User {

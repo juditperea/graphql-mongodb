@@ -8,8 +8,8 @@ db.getCollection('user').insertOne({
     surname: 'PORTA',
     id: '48524569D',
     address: {
+        country: 'SPAIN',
         street: 'C/ARISTOTIL,BAJOS',
         city: 'SABADELL',
-        country: 'SPAIN',
     }
 });
