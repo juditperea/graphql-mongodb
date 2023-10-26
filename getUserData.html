@@ -1,0 +1,83 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Get User by ID</title>
+    <style>
+        body{
+            font-family: Inter, system-ui, Avenir, Helvetica, Arial, sans-serif;
+            background-color: #303030;
+            color: white;
+        }
+        h2,label{
+            display: flex;
+            justify-content: center;
+        }
+        .userdetails{
+            margin-left: 670px;
+        }
+    </style>
+</head>
+
+<body>
+    <h2>Get User by ID</h2>
+    <form id="userForm">
+        <label for="userId">Please enter a valid user ID:<br></label>
+        <input type="text" id="userId" name="userId" style="width: 100px;margin-left:675px;margin-top:20px;" required>
+        <button type="submit">Submit</button>
+    </form>
+    <div id="userData" ></div>
+
+    <script>
+        document.getElementById('userForm').addEventListener('submit', async function(event) {
+            event.preventDefault();
+            const userId = document.getElementById('userId').value;
+
+            const response = await fetch('http://localhost:4000/graphql', {
+                method: 'POST',
+                headers: {
+                    'Content-Type': 'application/json'
+                },
+                body: JSON.stringify({
+                    query: `
+                        query {
+                            getUser(id: "${userId}") {
+                                id
+                                username
+                                name
+                                surname
+                                address {
+                                    country
+                                    street
+                                    city
+                                }
+                            }
+                        }
+                    `
+                })
+            });
+
+            const result = await response.json();
+            const userData = result.data.getUser;
+
+            const userDataDiv = document.getElementById('userData');
+            if (userData) {
+                userDataDiv.innerHTML = `
+                    <h3 class="userdetails">User Details</h3>
+                    <p class="userdetails">ID: <br><br>${userData.id}</p>
+                    <p class="userdetails">Username: <br><br>${userData.username}</p>
+                    <p class="userdetails">Name: <br><br>${userData.name}</p>
+                    <p class="userdetails">Surname: <br><br>${userData.surname}</p>
+                    <p class="userdetails">Address: <br><br>${userData.address.street}, ${userData.address.city}, ${userData.address.country}</p>
+                `;
+            } else {
+                userDataDiv.innerHTML = '<p class="userdetails">User not found</p>';
+            }
+        });
+    </script>
+</body>
+
+</html>
